@@ -25,8 +25,16 @@ const main = async () => {
    
         break;
       case "2":
-        console.log(taskList.listArr);
+      taskList.formatList()  
         break;
+
+        case "3":
+     taskList.listByStatus(true) 
+        break;
+        
+        case "4":
+          taskList.listByStatus(false) 
+          break;
     }
    
     saveDB(taskList.listArr)

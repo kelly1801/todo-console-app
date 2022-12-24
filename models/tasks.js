@@ -1,5 +1,5 @@
 import Task from "./task.js";
-import { readDb } from "../utils/saveFile.js";
+import colors from "colors";
 export default class Tasks {
   _list = {};
 
@@ -19,13 +19,29 @@ export default class Tasks {
   }
 
   getTaskFromDb(tasks = []) {
-    tasks.forEach(task => {
-      this._list[task.id] = task
-    } )
+    tasks.forEach((task) => {
+      this._list[task.id] = task;
+    });
   }
 
   createTask(desc = "") {
     const task = new Task(desc);
     this._list[task.id] = task;
+  }
+
+  formatList(listToFormat = this.listArr) {
+    const list = listToFormat.map((task, index) => {
+      return `\n ${colors.green(index + 1 + ".")} ${task.desc} :: ${
+        task.doneAt ? "Done".green : "Pending".red
+      }`;
+    });
+    console.log(...list);
+  }
+
+  listByStatus(status = true) {
+    const listFiltered = this.listArr.filter(
+      (task) => Boolean(task.doneAt) === status
+    );
+    return this.formatList(listFiltered);
   }
 }
