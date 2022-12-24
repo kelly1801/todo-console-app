@@ -44,4 +44,25 @@ export default class Tasks {
     );
     return this.formatList(listFiltered);
   }
+
+  deleteTask(id) {
+    if (this._list[id]) {
+      delete this._list[id];
+    }
+  }
+
+  changeStatus(ids = []) {
+     ids.map((id) => {
+      const task = this._list[id];
+      if (!task.doneAt) {
+        task.doneAt = new Date().toISOString();
+      }
+    });
+
+    this.listArr.forEach((task) => {
+      if (!ids.includes(task.id)) {
+        this._list[task.id].doneAt = null;
+      }
+    });
+  }
 }

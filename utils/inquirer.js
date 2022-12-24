@@ -9,31 +9,31 @@ const questions = [
     choices: [
       {
         value: "1",
-        name: `${'1.'.green} Create task`,
+        name: `${"1.".green} Create task`,
       },
       {
         value: "2",
-        name: `${'2.'.green} List All Tasks`,
+        name: `${"2.".green} List All Tasks`,
       },
       {
         value: "3",
-        name: `${'3.'.green} List Completed Tasks`,
+        name: `${"3.".green} List Completed Tasks`,
       },
       {
         value: "4",
-        name: `${'4.'.green} List Pending Task(s)`,
+        name: `${"4.".green} List Pending Task(s)`,
       },
       {
         value: "5",
-        name: `${'5.'.green} Complete Task(s)`,
+        name: `${"5.".green} Complete Task(s)`,
       },
       {
         value: "6",
-        name: `${'6.'.green} Delete a Task`,
+        name: `${"6.".green} Delete a Task`,
       },
       {
         value: "0",
-        name: `${'0.'.green} Exit`,
+        name: `${"0.".green} Exit`,
       },
     ],
   },
@@ -73,7 +73,7 @@ export const readInput = async (message) => {
       message,
 
       validate(value) {
-        if(!value.length) return "Please enter a value";
+        if (!value.length) return "Please enter a value";
 
         return true;
       },
@@ -83,4 +83,46 @@ export const readInput = async (message) => {
   const { desc } = await inquirer.prompt(question);
 
   return desc;
+};
+
+export const listTasks = async (tasks = [], type = "list", message = "Delete") => {
+  console.clear();
+  const choices = tasks.map((task, index) => {
+    return {
+      value: `${task.id}`,
+      name: `${colors.green(index + 1 + ".")} ${task.desc}`,
+      checked: task.doneAt
+    };
+  });
+
+  if (type === "list") {
+    choices.unshift({
+      value: "0",
+      name: `${"0".green} Cancel`,
+    });
+  }
+
+  const question = [
+    {
+      type,
+      name: "id",
+      message,
+      choices,
+    },
+  ];
+
+  const { id } = await inquirer.prompt(question);
+  return id;
+};
+export const confirmDeletion = async (message) => {
+  const question = [
+    {
+      type: "confirm",
+      name: "ok",
+      message,
+    },
+  ];
+
+  const { ok } = await inquirer.prompt(question);
+  return ok;
 };
